@@ -20,12 +20,9 @@
         self.startAngle = 90;
         self.progress = 0.0;
         self.priorProgress = 0.0;
+        self.duration = 1.0;
+        self.parts = 20;
         
-//        self.rootLayer	= [CALayer layer];
-//        self.rootLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
-//        //self.rootLayer.backgroundColor = [[UIColor redColor] CGColor];
-//        [self.layer addSublayer:self.rootLayer];
-
         self.arcLayer	= [CAShapeLayer layer];
         self.arcLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
         //self.arcLayer.backgroundColor = [[UIColor redColor] CGColor];
@@ -57,50 +54,25 @@
 {
     _progress = progress;
     
-    //self.label.text = [NSString stringWithFormat:@"%2.0f %%", 100*progress];
+    self.label.text = [NSString stringWithFormat:@"%2.0f %%", 100*progress];
     
     if ( animated )
     {
         [self animateGauge];
     } else {
-        [self drawStaticGauge];
-
+        [self drawStaticGauge:progress];
+        self.priorProgress = progress;
     }
 
     [self setNeedsDisplay];
-    
-    self.priorProgress = progress;
 }
 
-//- (void) drawRect:(CGRect)rect
-//{
-//    // Drawing code
-//    [self drawGauge:[NSNumber numberWithFloat:self.progress]];
-//}
-//
-//- (void) drawGauge:(NSNumber*)percent
-//{
-//    CGRect customRect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-//    CGFloat radius = customRect.size.width/2 - ((customRect.size.width/2)*0.3);
-//    CGContextRef ctx = UIGraphicsGetCurrentContext ();
-//    
-//    //CGContextSetRGBStrokeColor(ctx, 0.0, 0.0, 1.0, 1.0);
-//    CGContextSetStrokeColorWithColor(ctx, [self.color CGColor]);
-//    CGFloat start = DEGREES_TO_RADIANS(self.startAngle);
-//    CGFloat end = DEGREES_TO_RADIANS(self.startAngle + (360 * percent.floatValue));
-//    CGContextAddArc(ctx, self.frame.size.width/2  , self.frame.size.height/2, radius , start, end, 0);
-//    
-//    CGFloat lineWidth = customRect.size.width/2 - (radius + 2);
-//    CGContextSetLineWidth(ctx, lineWidth);
-//    CGContextDrawPath(ctx, kCGPathStroke);
-//}
-
-- (void) drawStaticGauge
+- (void) drawStaticGauge:(CGFloat)value
 {
-    NSLog(@"START %f", self.startAngle);
-    NSLog(@"PROGRESS %f %f %f ", self.progress, (360 * self.progress), self.startAngle + (360 * self.progress));
-    CGFloat toDegrees = self.startAngle + (360 * self.progress);
-    NSLog(@"TO %f", toDegrees);
+    CGFloat toDegrees = self.startAngle + (360 * value);
+//    NSLog(@"START %f", self.startAngle);
+//    NSLog(@"PROGRESS %f %f %f ", value, (360 * value), self.startAngle + (360 * value));
+//    NSLog(@"TO %f", toDegrees);
     
     CGFloat radius = self.frame.size.width/2 - ((self.frame.size.width/2)*0.3);
     
@@ -116,6 +88,32 @@
 
 - (void) animateGauge
 {
+    self.currentPart = 1;
+    self.partSize = (self.progress - self.priorProgress)/(float)self.parts;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:self.duration/self.parts
+                                                  target:self
+                                                selector:@selector(updateGaugeInterval:)
+                                                userInfo:nil
+                                                 repeats:YES];
+
+}
+
+- (void) updateGaugeInterval:(NSTimer*)timer
+{
+    CGFloat newProgress = self.priorProgress + (self.currentPart * self.partSize);
+    [self drawStaticGauge:newProgress];
+    
+    if ( self.parts <= self.currentPart )
+    {
+        [timer invalidate];
+        self.priorProgress = self.progress;
+    }
+    self.currentPart += 1;
+
+}
+
+- (void) animateGaugeWonky
+{
     NSLog(@"START %f", self.startAngle);
     NSLog(@"PRIOR %f %f %f ", self.priorProgress, (360 * self.priorProgress), self.startAngle + (360 * self.priorProgress));
     NSLog(@"PROGRESS %f %f %f ", self.progress, (360 * self.progress), self.startAngle + (360 * self.progress));
@@ -129,7 +127,7 @@
     CGFloat start = DEGREES_TO_RADIANS(self.startAngle);
     CGFloat end = DEGREES_TO_RADIANS(fromDegrees);
     CGPathAddArc(basePath, nil, self.frame.size.width/2, self.frame.size.height/2, radius, start, end, 0);
-
+    
     CGMutablePathRef newPath = CGPathCreateMutable();
     start = DEGREES_TO_RADIANS(self.startAngle);
     end = DEGREES_TO_RADIANS(toDegrees);
@@ -145,7 +143,7 @@
     self.arcLayer.lineWidth = self.arcLayer.frame.size.width/2 - (radius + 2);;
     self.arcLayer.path = newPath;
     [self.arcLayer addAnimation:animation forKey:keyPath];
-
+    
 }
 
 @end

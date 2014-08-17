@@ -38,10 +38,8 @@
 - (IBAction)animationChanged:(id)sender {
     if ( 0 == self.animation.selectedSegmentIndex )
     {
-        NSLog(@"Now");
         [self.guage setProgress:self.slider.value];
     } else {
-        NSLog(@"Animated");
         [self.guage setProgress:self.slider.value animated:YES];
     }
 }

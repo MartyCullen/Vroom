@@ -19,10 +19,10 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    CGRect gaugeRect = CGRectMake(100, 100, 100, 100);
+    CGRect gaugeRect = self.logoView.frame;
     self.guage = [[MRCGauge alloc] initWithFrame:gaugeRect];
     
-    [self.blackView addSubview:self.guage];
+    [self.view addSubview:self.guage];
 }
 
 - (void)didReceiveMemoryWarning

@@ -16,21 +16,26 @@
     if (self) {
         // Initialization code
         self.color = [UIColor colorWithRed:0.1 green:1.0 blue:0.1 alpha:1];
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.9];
         self.startAngle = 90;
         self.progress = 0.0;
         self.priorProgress = 0.0;
-        self.duration = 1.0;
-        self.parts = 20;
+        self.animationDuration = 1.0;
+        self.animationParts = 20;
         
         self.arcLayer	= [CAShapeLayer layer];
         self.arcLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
-        //self.arcLayer.backgroundColor = [[UIColor redColor] CGColor];
         [self.layer addSublayer:self.arcLayer];
 
-        CGRect labelRect = CGRectMake(frame.size.width/3.0, frame.size.height/3.0, frame.size.width/3.0, frame.size.height/3.0);
-        self.label = [[UILabel alloc] initWithFrame:labelRect];
+        CGRect labelRect = CGRectMake(frame.size.width/4.0, frame.size.height/4.0, frame.size.width/2.0, frame.size.height/2.0);
+        self.label = [[UILabel alloc] initWithFrame:frame];
+        self.label.textAlignment = NSTextAlignmentCenter;
+        self.label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+        self.label.font = [UIFont fontWithName:@"Helvetica" size:30];
+        self.label.adjustsFontSizeToFitWidth = YES;
         self.label.textColor = self.color;
+        self.label.backgroundColor = [UIColor clearColor];
+        self.label.frame = labelRect;
         [self addSubview:self.label];
     }
     return self;
@@ -79,18 +84,23 @@
     CGMutablePathRef newPath = CGPathCreateMutable();
     CGFloat start = DEGREES_TO_RADIANS(self.startAngle);
     CGFloat end = DEGREES_TO_RADIANS(toDegrees);
+    //CGPathMoveToPoint(newPath, nil, self.frame.size.width/2, self.frame.size.height/2 + radius);
     CGPathAddArc(newPath, nil, self.frame.size.width/2, self.frame.size.height/2, radius, start, end, 0);
 
+    self.arcLayer.backgroundColor = [[UIColor clearColor] CGColor];
     self.arcLayer.strokeColor = [self.color CGColor];
-    self.arcLayer.lineWidth = self.arcLayer.frame.size.width/2 - (radius + 2);;
+    self.arcLayer.fillColor = [[UIColor clearColor] CGColor];
+    self.arcLayer.lineWidth = radius/8.0;
     self.arcLayer.path = newPath;
+    
+    CGPathRelease(newPath);
 }
 
 - (void) animateGauge
 {
-    self.currentPart = 1;
-    self.partSize = (self.progress - self.priorProgress)/(float)self.parts;
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:self.duration/self.parts
+    self.currentAnimationPart = 1;
+    self.animationPartSize = (self.progress - self.priorProgress)/(float)self.animationParts;
+    self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:self.animationDuration/self.animationParts
                                                   target:self
                                                 selector:@selector(updateGaugeInterval:)
                                                 userInfo:nil
@@ -100,15 +110,15 @@
 
 - (void) updateGaugeInterval:(NSTimer*)timer
 {
-    CGFloat newProgress = self.priorProgress + (self.currentPart * self.partSize);
+    CGFloat newProgress = self.priorProgress + (self.currentAnimationPart * self.animationPartSize);
     [self drawStaticGauge:newProgress];
     
-    if ( self.parts <= self.currentPart )
+    if ( self.animationParts <= self.currentAnimationPart )
     {
         [timer invalidate];
         self.priorProgress = self.progress;
     }
-    self.currentPart += 1;
+    self.currentAnimationPart += 1;
 
 }
 

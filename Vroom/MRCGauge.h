@@ -20,11 +20,11 @@
 @property (nonatomic, strong) CAShapeLayer* arcLayer;
 
 
-@property (nonatomic, strong) NSTimer* timer;
-@property (nonatomic, assign) float duration;
-@property (nonatomic, assign) NSInteger parts;
-@property (nonatomic, assign) NSInteger currentPart;
-@property (nonatomic, assign) float partSize;
+@property (nonatomic, strong) NSTimer* animationTimer;
+@property (nonatomic, assign) float animationDuration;
+@property (nonatomic, assign) NSInteger animationParts;
+@property (nonatomic, assign) NSInteger currentAnimationPart;
+@property (nonatomic, assign) float animationPartSize;
 
 - (void) setProgress:(CGFloat)progress animated:(BOOL)animated;
 

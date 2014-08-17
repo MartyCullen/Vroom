@@ -23,6 +23,7 @@
 		A6C1E1DE199ED9EA00A53B92 /* VroomTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A6C1E1DD199ED9EA00A53B92 /* VroomTests.m */; };
 		A6C1E1ED199EE11000A53B92 /* MRCGauge.m in Sources */ = {isa = PBXBuildFile; fileRef = A6C1E1EC199EE11000A53B92 /* MRCGauge.m */; };
 		A6C1E1EE199EE11000A53B92 /* MRCGauge.m in Sources */ = {isa = PBXBuildFile; fileRef = A6C1E1EC199EE11000A53B92 /* MRCGauge.m */; };
+		A6C1E1F019A169DC00A53B92 /* ShareFile.png in Resources */ = {isa = PBXBuildFile; fileRef = A6C1E1EF19A169DC00A53B92 /* ShareFile.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		A6C1E1DD199ED9EA00A53B92 /* VroomTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VroomTests.m; sourceTree = "<group>"; };
 		A6C1E1EB199EE11000A53B92 /* MRCGauge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCGauge.h; sourceTree = "<group>"; };
 		A6C1E1EC199EE11000A53B92 /* MRCGauge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCGauge.m; sourceTree = "<group>"; };
+		A6C1E1EF19A169DC00A53B92 /* ShareFile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShareFile.png; path = ../../../Downloads/ShareFile.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 				A6C1E1EB199EE11000A53B92 /* MRCGauge.h */,
 				A6C1E1EC199EE11000A53B92 /* MRCGauge.m */,
 				A6C1E1CA199ED9E900A53B92 /* Images.xcassets */,
+				A6C1E1EF19A169DC00A53B92 /* ShareFile.png */,
 				A6C1E1B9199ED9E900A53B92 /* Supporting Files */,
 			);
 			path = Vroom;
@@ -238,6 +241,7 @@
 				A6C1E1CB199ED9E900A53B92 /* Images.xcassets in Resources */,
 				A6C1E1BD199ED9E900A53B92 /* InfoPlist.strings in Resources */,
 				A6C1E1C6199ED9E900A53B92 /* Main.storyboard in Resources */,
+				A6C1E1F019A169DC00A53B92 /* ShareFile.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +469,7 @@
 				A6C1E1E3199ED9EA00A53B92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A6C1E1E4199ED9EA00A53B92 /* Build configuration list for PBXNativeTarget "VroomTests" */ = {
 			isa = XCConfigurationList;
@@ -473,6 +478,7 @@
 				A6C1E1E6199ED9EA00A53B92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

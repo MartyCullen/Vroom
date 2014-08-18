@@ -14,41 +14,41 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        // Initialization codex
         self.color = [UIColor colorWithRed:0.1 green:1.0 blue:0.1 alpha:1];
-        self.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.9];
+        self.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
+        self.haloColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.0];
         self.startAngle = 90;
         self.progress = 0.0;
         self.priorProgress = 0.0;
         self.animationDuration = 1.0;
         self.animationParts = 20;
+        self.currentAnimationPart = 0;
+        
+        self.haloLayer	= [CAShapeLayer layer];
+        self.haloLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+        [self.layer addSublayer:self.haloLayer];
         
         self.arcLayer	= [CAShapeLayer layer];
         self.arcLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
         [self.layer addSublayer:self.arcLayer];
-
+        
         CGRect labelRect = CGRectMake(frame.size.width/4.0, frame.size.height/4.0, frame.size.width/2.0, frame.size.height/2.0);
         self.label = [[UILabel alloc] initWithFrame:frame];
         self.label.textAlignment = NSTextAlignmentCenter;
         self.label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-        self.label.font = [UIFont fontWithName:@"Helvetica" size:30];
+        //self.label.font = [UIFont fontWithName:@"Helvetica" size:30];
         self.label.adjustsFontSizeToFitWidth = YES;
         self.label.textColor = self.color;
         self.label.backgroundColor = [UIColor clearColor];
         self.label.frame = labelRect;
         [self addSubview:self.label];
-    }
+
+        [self drawHalo];
+        [self setProgress:self.progress];
+}
     return self;
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 - (void) setProgress:(CGFloat)progress
 {
@@ -59,7 +59,20 @@
 {
     _progress = progress;
     
-    self.label.text = [NSString stringWithFormat:@"%2.0f %%", 100*progress];
+    NSString* text = [NSString stringWithFormat:@"%3.0f", 100*progress];
+    UIFont* bigFont = [UIFont fontWithName:@"Helvetica-Bold" size:40];
+    UIFont* smallFont = [UIFont fontWithName:@"Helvetica" size:20];
+    NSMutableAttributedString* progressString = [[NSMutableAttributedString alloc]
+                                                 initWithString: text
+                                                     attributes: @{NSFontAttributeName: bigFont}];
+    NSAttributedString* percentString = [[NSMutableAttributedString alloc]
+                                         initWithString: @"%"
+                                         attributes: @{NSFontAttributeName: smallFont}];
+    
+    [progressString appendAttributedString:percentString];
+    
+    self.label.attributedText = progressString;
+    //self.label.text = [NSString stringWithFormat:@"%2.0f %%", 100*progress];
     
     if ( animated )
     {
@@ -71,6 +84,25 @@
 
     [self setNeedsDisplay];
 }
+
+- (void) drawHalo
+{
+    CGFloat radius = self.frame.size.width/2 - ((self.frame.size.width/2)*0.3);
+    
+    CGMutablePathRef newPath = CGPathCreateMutable();
+    CGFloat start = DEGREES_TO_RADIANS(0);
+    CGFloat end = DEGREES_TO_RADIANS(360);
+    CGPathAddArc(newPath, nil, self.frame.size.width/2, self.frame.size.height/2, radius, start, end, 0);
+    
+    self.haloLayer.backgroundColor = [[UIColor clearColor] CGColor];
+    self.haloLayer.strokeColor = [self.haloColor CGColor];
+    self.haloLayer.fillColor = [[UIColor clearColor] CGColor];
+    self.haloLayer.lineWidth = radius/8.0;
+    self.haloLayer.path = newPath;
+    
+    CGPathRelease(newPath);
+}
+
 
 - (void) drawStaticGauge:(CGFloat)value
 {
@@ -98,6 +130,12 @@
 
 - (void) animateGauge
 {
+    // Protect against animation in progress
+    if (0 != self.currentAnimationPart )
+    {
+        // For now just discard request
+        return;
+    }
     self.currentAnimationPart = 1;
     self.animationPartSize = (self.progress - self.priorProgress)/(float)self.animationParts;
     self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:self.animationDuration/self.animationParts
@@ -117,8 +155,10 @@
     {
         [timer invalidate];
         self.priorProgress = self.progress;
+        self.currentAnimationPart = 0;
+    } else {
+        self.currentAnimationPart += 1;
     }
-    self.currentAnimationPart += 1;
 
 }
 

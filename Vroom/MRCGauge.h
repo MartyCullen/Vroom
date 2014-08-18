@@ -17,7 +17,9 @@
 @property (nonatomic, assign) CGFloat progress;
 @property (nonatomic, strong) UILabel* label;
 @property (nonatomic, strong) UIColor* color;
+@property (nonatomic, strong) UIColor* haloColor;
 @property (nonatomic, strong) CAShapeLayer* arcLayer;
+@property (nonatomic, strong) CAShapeLayer* haloLayer;
 
 
 @property (nonatomic, strong) NSTimer* animationTimer;

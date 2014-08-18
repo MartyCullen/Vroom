@@ -46,7 +46,7 @@
 
         [self drawHalo];
         [self setProgress:self.progress];
-}
+    }
     return self;
 }
 

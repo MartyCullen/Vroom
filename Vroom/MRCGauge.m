@@ -59,19 +59,6 @@
 {
     _progress = progress;
     
-    NSString* text = [NSString stringWithFormat:@"%3.0f", 100*progress];
-    UIFont* bigFont = [UIFont fontWithName:@"Helvetica-Bold" size:40];
-    UIFont* smallFont = [UIFont fontWithName:@"Helvetica" size:20];
-    NSMutableAttributedString* progressString = [[NSMutableAttributedString alloc]
-                                                 initWithString: text
-                                                     attributes: @{NSFontAttributeName: bigFont}];
-    NSAttributedString* percentString = [[NSMutableAttributedString alloc]
-                                         initWithString: @"%"
-                                         attributes: @{NSFontAttributeName: smallFont}];
-    
-    [progressString appendAttributedString:percentString];
-    
-    self.label.attributedText = progressString;
     //self.label.text = [NSString stringWithFormat:@"%2.0f %%", 100*progress];
     
     if ( animated )
@@ -106,10 +93,23 @@
 
 - (void) drawStaticGauge:(CGFloat)value
 {
+    // Update text
+    NSString* text = [NSString stringWithFormat:@"%3.0f", 100*value];
+    UIFont* bigFont = [UIFont fontWithName:@"Helvetica-Bold" size:40];
+    UIFont* smallFont = [UIFont fontWithName:@"Helvetica" size:20];
+    NSMutableAttributedString* progressString = [[NSMutableAttributedString alloc]
+                                                 initWithString: text
+                                                 attributes: @{NSFontAttributeName: bigFont}];
+    NSAttributedString* percentString = [[NSMutableAttributedString alloc]
+                                         initWithString: @"%"
+                                         attributes: @{NSFontAttributeName: smallFont}];
+    
+    [progressString appendAttributedString:percentString];
+    
+    self.label.attributedText = progressString;
+    
+    // Update ring
     CGFloat toDegrees = self.startAngle + (360 * value);
-//    NSLog(@"START %f", self.startAngle);
-//    NSLog(@"PROGRESS %f %f %f ", value, (360 * value), self.startAngle + (360 * value));
-//    NSLog(@"TO %f", toDegrees);
     
     CGFloat radius = self.frame.size.width/2 - ((self.frame.size.width/2)*0.3);
     

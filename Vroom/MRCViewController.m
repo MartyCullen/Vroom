@@ -31,10 +31,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)sliderValueChanged:(id)sender {
-    
-}
-
 - (IBAction)animationChanged:(id)sender {
     if ( 0 == self.animation.selectedSegmentIndex )
     {

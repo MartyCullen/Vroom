@@ -162,38 +162,38 @@
 
 }
 
-- (void) animateGaugeWonky
-{
-    NSLog(@"START %f", self.startAngle);
-    NSLog(@"PRIOR %f %f %f ", self.priorProgress, (360 * self.priorProgress), self.startAngle + (360 * self.priorProgress));
-    NSLog(@"PROGRESS %f %f %f ", self.progress, (360 * self.progress), self.startAngle + (360 * self.progress));
-    CGFloat fromDegrees = self.startAngle + (360 * self.priorProgress);
-    CGFloat toDegrees = self.startAngle + (360 * self.progress);
-    NSLog(@"FROM %f TO %f", fromDegrees, toDegrees);
-    
-    CGFloat radius = self.frame.size.width/2 - ((self.frame.size.width/2)*0.3);
-    
-    CGMutablePathRef basePath = CGPathCreateMutable();
-    CGFloat start = DEGREES_TO_RADIANS(self.startAngle);
-    CGFloat end = DEGREES_TO_RADIANS(fromDegrees);
-    CGPathAddArc(basePath, nil, self.frame.size.width/2, self.frame.size.height/2, radius, start, end, 0);
-    
-    CGMutablePathRef newPath = CGPathCreateMutable();
-    start = DEGREES_TO_RADIANS(self.startAngle);
-    end = DEGREES_TO_RADIANS(toDegrees);
-    CGPathAddArc(newPath, nil, self.frame.size.width/2, self.frame.size.height/2, radius, start, end, 0);
-    
-    NSString* keyPath = @"path";
-    CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:keyPath];
-    [animation setDuration:1.0];
-    [animation setFromValue:(__bridge id)basePath];
-    [animation setToValue:(__bridge id)newPath];
-    
-    self.arcLayer.strokeColor = [self.color CGColor];
-    self.arcLayer.lineWidth = self.arcLayer.frame.size.width/2 - (radius + 2);;
-    self.arcLayer.path = newPath;
-    [self.arcLayer addAnimation:animation forKey:keyPath];
-    
-}
+//- (void) animateGaugeWonky
+//{
+//    NSLog(@"START %f", self.startAngle);
+//    NSLog(@"PRIOR %f %f %f ", self.priorProgress, (360 * self.priorProgress), self.startAngle + (360 * self.priorProgress));
+//    NSLog(@"PROGRESS %f %f %f ", self.progress, (360 * self.progress), self.startAngle + (360 * self.progress));
+//    CGFloat fromDegrees = self.startAngle + (360 * self.priorProgress);
+//    CGFloat toDegrees = self.startAngle + (360 * self.progress);
+//    NSLog(@"FROM %f TO %f", fromDegrees, toDegrees);
+//    
+//    CGFloat radius = self.frame.size.width/2 - ((self.frame.size.width/2)*0.3);
+//    
+//    CGMutablePathRef basePath = CGPathCreateMutable();
+//    CGFloat start = DEGREES_TO_RADIANS(self.startAngle);
+//    CGFloat end = DEGREES_TO_RADIANS(fromDegrees);
+//    CGPathAddArc(basePath, nil, self.frame.size.width/2, self.frame.size.height/2, radius, start, end, 0);
+//    
+//    CGMutablePathRef newPath = CGPathCreateMutable();
+//    start = DEGREES_TO_RADIANS(self.startAngle);
+//    end = DEGREES_TO_RADIANS(toDegrees);
+//    CGPathAddArc(newPath, nil, self.frame.size.width/2, self.frame.size.height/2, radius, start, end, 0);
+//    
+//    NSString* keyPath = @"path";
+//    CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:keyPath];
+//    [animation setDuration:1.0];
+//    [animation setFromValue:(__bridge id)basePath];
+//    [animation setToValue:(__bridge id)newPath];
+//    
+//    self.arcLayer.strokeColor = [self.color CGColor];
+//    self.arcLayer.lineWidth = self.arcLayer.frame.size.width/2 - (radius + 2);;
+//    self.arcLayer.path = newPath;
+//    [self.arcLayer addAnimation:animation forKey:keyPath];
+//    
+//}
 
 @end

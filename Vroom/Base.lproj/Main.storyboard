@@ -23,9 +23,6 @@
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="yX7-UO-IbQ">
                                 <rect key="frame" x="10" y="359" width="300" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="sliderValueChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="A2u-j5-7JC"/>
-                                </connections>
                             </slider>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" momentary="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kk0-wo-VRo">
                                 <rect key="frame" x="73" y="434" width="175" height="29"/>

@@ -16,6 +16,5 @@
 @property (weak, nonatomic) IBOutlet UIView *logoView;
 @property (nonatomic, strong) MRCGauge* guage;
 
-- (IBAction)sliderValueChanged:(id)sender;
 - (IBAction)animationChanged:(id)sender;
 @end
